@@ -1,0 +1,12 @@
+# op: #<primitive-generic +>, coeff: 5
+# op: #<primitive-generic ->, coeff: 2
+# op: #<primitive-generic +>, coeff: 3
+
+f(x) = sin(x)
+plot f(x)
+replot f(4)
+replot f(7)
+replot f(2)
+replot f(9)
+set xrange[1:10]; replot
+set yrange[:]; replot
