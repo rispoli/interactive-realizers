@@ -1,6 +1,7 @@
+# http://ac12.wordpress.com/2007/04/01/gnuplot-image/
+
+
 #set xrange [0:5]; replot
-
-
 set term png size 1024, 768
 
 set xrange[-5:5]
