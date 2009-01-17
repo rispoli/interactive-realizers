@@ -1,5 +1,3 @@
-(use-modules (srfi srfi-1))
-
 (define randomth
   (lambda (l)
 	(let ((n (random (length l))))
@@ -22,7 +20,7 @@
 
 (define dfr
   (lambda (xs)
-	(fold-right (lambda (x rs)
+	(foldr (lambda (x rs)
 				  (cons x (map (lambda (r)
 								 (+ r (if (<= x r)
 										1
