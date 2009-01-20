@@ -1,28 +1,21 @@
-NUM ::= [0-9]+
-
-VAR ::= [a-zA-Z]+[a-zA-Z0-9_]*
-
 BOOL ::= true | false
+
+ID ::= [a-zA-Z]+[a-zA-Z0-9_]*
+
+NUM ::= [0-9]+
 
 prefix-op ::= - | ~
 
 infix-op ::= + | - | * | / | ^ | && | || | == | != | > | < | >= | <=
 
-var-list ::= var var-list
-          |  var
-
-exp-list ::= exp exp-list
-          |  exp
-
 exp ::= BOOL
+     |  ID
      |  NUM
-     |  VAR
      |  (exp)
      |  prefix-op exp
      |  exp infix-op exp
      |  if exp then exp else exp
-     |  let VAR var-list = exp
-     |  let VAR var-list = exp in exp
-     |  letrec VAR var-list = exp in exp
-     |  lambda var-list -> exp
-     |  @(exp exp-list)
+     |  let ID+ = exp
+     |  let ID+ = exp in exp
+     |  lambda ID* -> exp
+     |  @(exp exp*)
