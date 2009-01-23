@@ -19,3 +19,4 @@ exp ::= BOOL
      |  let ID+ = exp in exp
      |  lambda ID* -> exp
      |  @(exp exp*)
+     |  {exp*}
