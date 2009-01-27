@@ -2,11 +2,23 @@
 
 ;;; if s = (<nu,n_1,m_1>, ..., <nu,n_k,m_k>):
 
+(define eqv-p?
+  (lambda (pattern target)
+    (let ((i -1))
+      (foldl (lambda (a b) (and a b))
+             #t
+             (map (lambda (p)
+                    (set! i (+ i 1))
+                    (if (equal? p '_)
+                      #t
+                      (eqv? p (list-ref target i))))
+                  pattern)))))
+
 (define already-in?
   (lambda (fi-sn sn)
     (cond
       ((null? sn) #f)
-      ((member fi-sn sn) (list-ref fi-sn 2)) ; _ != #f ==> #t 
+      ((eqv-p? fi-sn (car sn)) (list-ref (car sn) 2))
       (else (already-in? fi-sn (cdr sn))))))
 
 (define consistent?
