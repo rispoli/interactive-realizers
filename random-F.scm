@@ -1,4 +1,4 @@
-(use-modules (ice-9 format))
+(require srfi/48)
 
 (load "find-state-with-lists.scm")
 (load "list-utils.scm")
