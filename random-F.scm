@@ -8,16 +8,9 @@
     ;(* (+ x 1) (- x 2) (/ (- x 4) 2))))
     (sin x)))
 
-(define find-m
-  (lambda (n sn)
-    (cond
-      ((null? sn) #f)
-      ((eqv? n (list-ref (car sn) 1)) (list-ref (car sn) 2))
-      (else (find-m n (cdr sn))))))
-
 (define mu
   (lambda (s n)
-    (let ((mi (find-m n s)))
+    (let ((mi (already-in? `(_ ,n _) s)))
       (if mi
         (mu s mi)
         n))))
