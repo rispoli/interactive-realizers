@@ -8,24 +8,12 @@
 
 (define a 1)
 
-;; Codice praticamente uguale a already-in?:
-;; sarebbe meglio poter sostituire questo codice e relativa chiamata (nella
-;; definizione di mu) con qualcosa del tipo: (already-in? (_, n, _) s) dove gli
-;; _ abbiano lo stesso significato che hanno in Prolog. Qualche suggerimento a
-;; riguardo?
-(define find-m
-  (lambda (n sn)
-	(cond
-	  ((null? sn) #f)
-	  ((eqv? n (list-ref (car sn) 1)) (list-ref (car sn) 2))
-	  (else (find-m n (cdr sn))))))
-
 (define mu
   (lambda (s n)
-	(let ((mi (find-m n s)))
-	  (if mi
-		(mu s mi)
-		n))))
+    (let ((mi (already-in? `(_ ,n _) s)))
+      (if mi
+        (mu s mi)
+        n))))
 
 (define m
   (lambda (s)
