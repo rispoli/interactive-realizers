@@ -1,5 +1,3 @@
-(require srfi/48)
-
 (load "find-state-with-lists.scm")
 (load "list-utils.scm")
 
@@ -26,7 +24,7 @@
                   (if (= n 0)
                     acc
                     (let ((op (randomth (list + - * /))) (coeff (+ (random 7) 1)))
-                      (format #t "op: ~a, coeff: ~d~%" op coeff)
+                      (printf "op: ~a, coeff: ~a~%" op coeff)
                       (F (- n 1) (cons (lambda (s)
                                          (list (lambda (n m)
                                                  (> (phi n) (phi m)))
@@ -53,14 +51,13 @@
   (lambda (filename)
     (with-output-to-file filename
                          (lambda ()
-                           (format #t "f(x) = ~%")
-                           (format #t "plot f(x)~%")
-                           (format #t "replot f(~a)~%" (m final-state))
+                           (printf "f(x) = ~%")
+                           (printf "plot f(x)~%")
+                           (printf "replot f(~a)~%" (m final-state))
                            (let ((fs-final-state (map (lambda (p) (list-ref (p final-state) 2)) fs)))
-                             (map (lambda (v) (format #t "replot f(~a)~%" v)) fs-final-state)
-                             (format #t "set xrange[~?]; replot~%" "~a:~a" (list (- (apply min fs-final-state) 1)
-                                                                                 (+ (apply max fs-final-state) 1)))
-                             (format #t "set yrange[:]; replot~%"))))))
+                             (map (lambda (v) (printf "replot f(~a)~%" v)) fs-final-state)
+                             (printf "set xrange[~a:~a]; replot~%" (- (apply min fs-final-state) 1) (+ (apply max fs-final-state) 1))
+                             (printf "set yrange[:]; replot~%"))))))
 
 (define all-perm-to-gnuplot
   (lambda (filename)
@@ -68,8 +65,8 @@
       (map (lambda (f)
              (set! i (+ i 1))
              (let ((current-solution (find-solutions n f)))
-               (let ((filename (format #f "~a.~d" filename i)))
-                 (format #t "Saving results for permutation ~d in ~a~%" i filename)
+               (let ((filename (format "~a.~a" filename i)))
+                 (printf "Saving results for permutation ~a in ~a~%" i filename)
                  (to-gnuplot filename))
                current-solution))
            perms))))
