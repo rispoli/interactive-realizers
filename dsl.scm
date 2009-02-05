@@ -88,7 +88,7 @@
                                               `(let ((,$2 ,(if (null? $3) body `(lambda (,@(reverse $3)) ,body)))) ,$7)))
              ((LAMBDA id-list -> exp) `(lambda (,@(reverse $2)) ,$4))
              ((@ OP exp exp-list CP) `(,$3 ,@(reverse $4)))
-             ((LETREC ID id-list = exp colon exp semicolon WITH exp) `(define ,$2 (lambda (,@(reverse $3)) (if ,$5 ,(WFR $2 $10 $7)))))
+             ((LETREC ID id-list = exp colon exp semicolon WITH exp) `(define ,$2 (lambda (,@(reverse $3)) (if ,(WFR $2 $10 $5) ,(WFR $2 $10 $7)))))
              ((LETREC ID id-list = CASE case-list WITH exp) `(define ,$2 (lambda (,@(reverse $3)) (cond ,@(WFR $2 $8 (reverse $6))))))
              ((OCB exp-list CCB) `(list ,@(reverse $2)))
              )))))
@@ -109,7 +109,7 @@
                                    ,(map (lambda (c) (set! vars (cons (car c) vars)) (cons (car c) (wfr (cdr c)))) (cadr code))
                                    ,@(if (member f vars) (cddr code) (map (lambda (c) (wfr c)) (cddr code))))))
                        ((lambda) (if (member f (cadr code)) code `(lambda ,(cadr code) ,@(map (lambda (c) (wfr c)) (cddr code)))))
-                       ((cond) `(cond ,@(map (lambda (c) `(,(car c) ,(wfr (cadr c)))) (cdr code))))
+                       ((cond) `(cond ,@(map (lambda (c) `(,(wfr (car c)) ,(wfr (cadr c)))) (cdr code))))
                        ((f) (if (null? forbidden)
                               `(if (< (,weight ,(cadr code)) (,weight ,(cadadr code))) ,code 0)
                               (let* ((forbidden (car forbidden)) (source (list-ref forbidden 0)) (start (list-ref forbidden 1)) (end (list-ref forbidden 2)))
@@ -161,3 +161,6 @@
 ; (translate "letrec f x = P1: let h x y = @(g x + y) in @(f @(g x)); with W") ; transformed
 ; (translate "letrec f x = P1: let f x y = @(g x + y) in @(f @(g x)); with W") ; shadowed
 ; (translate "letrec f x = P1: let f x y = @(f x + y) in @(f @(g x)); with W") ; forbidden
+; (translate "letrec f x = @(f @(h y)): @(f @((lambda x -> 3) x)); with W")
+; (translate "letrec f x = case P1: @(f @(g x)); @(f @(h y)): t2; default: @(f @(i z)); with W")
+; (translate "letrec f x = case default: @(f @(i z)); with W")
