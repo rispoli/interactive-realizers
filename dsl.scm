@@ -51,6 +51,7 @@
     ("let" 'LET)
     ("letrec" 'LETREC)
     ("not" 'NOT)
+    ("or" 'OR)
     ("then" 'THEN)
     ("true" (token-BOOL #t))
     ("with" 'WITH)
