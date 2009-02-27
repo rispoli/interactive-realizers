@@ -144,6 +144,10 @@
                    ((null? code) '())
                    ((not (list? code)) code)
                    ((list? (car code)) (cons (wfr (car code)) (wfr (cdr code))))
+                   ((eqv? f (car code)) (if (null? forbidden)
+                                          `(if (< (,weight ,(cadr code)) (,weight ,(cadadr code))) ,code 0)
+                                          (let* ((forbidden (car forbidden)) (source (list-ref forbidden 0)) (start (list-ref forbidden 1)) (end (list-ref forbidden 2)))
+                                            (raise-read-error (format "forbidden recursion on ~a" f) source (position-line start) (position-col start) (position-offset start) (- (position-offset end) (position-offset start))))))
                    (else
                      (case (car code)
                        ((if) `(if ,@(map (lambda (c) (wfr c)) (cdr code))))
@@ -153,10 +157,6 @@
                                    ,@(if (member f vars) (cddr code) (map (lambda (c) (wfr c)) (cddr code))))))
                        ((lambda) (if (member f (cadr code)) code `(lambda ,(cadr code) ,@(map (lambda (c) (wfr c)) (cddr code)))))
                        ((cond) `(cond ,@(map (lambda (c) `(,(wfr (car c)) ,(wfr (cadr c)))) (cdr code))))
-                       ((f) (if (null? forbidden)
-                              `(if (< (,weight ,(cadr code)) (,weight ,(cadadr code))) ,code 0)
-                              (let* ((forbidden (car forbidden)) (source (list-ref forbidden 0)) (start (list-ref forbidden 1)) (end (list-ref forbidden 2)))
-                                (raise-read-error (format "forbidden recursion on ~a" f) source (position-line start) (position-col start) (position-offset start) (- (position-offset end) (position-offset start))))))
                        (else (cons (car code) (wfr (cdr code))))))))))
       (wfr code))))
 
