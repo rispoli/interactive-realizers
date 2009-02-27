@@ -179,7 +179,7 @@
 
 (define evaluate
   (lambda (s)
-    (map eval (translate s)))) ; (#<void> ... ) ignore results? http://docs.plt-scheme.org/reference/pairs.html#(def._((lib._scheme/private/map..ss)._for-each))
+    (for-each eval (translate s))))
 
 (define translate-file
   (lambda (path)
@@ -189,7 +189,7 @@
 
 (define evaluate-file
   (lambda (path)
-    (map eval (translate-file path)))) ; (#<void> ... ) ignore results? http://docs.plt-scheme.org/reference/pairs.html#(def._((lib._scheme/private/map..ss)._for-each))
+    (for-each eval (translate-file path))))
 
 ; (translate "5 + if true then 2 else 3")
 ; (translate "let f x y = x + y in let z = 3 in if false then f (2+3*5) (3+1-1*2) else z")
