@@ -112,7 +112,7 @@
               ((expr OR expr) `(or ,$1 ,$3))
               ((expr BARBAR expr) `(or ,$1 ,$3))
               ((IF expr THEN expr ELSE expr) (prec prec_if) `(if ,$2 ,$4 ,$6))
-              ((LET id-list EQUAL expr IN expr) (prec prec_let) (let ((body (WFR (car $2) #f $4 (list source-name $4-start-pos $4-end-pos))))
+              ((LET id-list EQUAL expr IN expr) (prec prec_let) (let ((body (WFR (car $2) #f $4 #:forbidden (list source-name $4-start-pos $4-end-pos))))
                                                                   `(let ((,(car $2) ,(if (null? (cdr $2)) body `(lambda (,@(cdr $2)) ,body)))) ,$6)))
               ((function id-list MINUSGREATER expr) `(lambda (,@$2) ,$4)))
         (expr-sm-list ((expr-sm-list SEMI expr) (prec prec_list) (cons $3 $1))
@@ -124,7 +124,7 @@
         (id-list ((ID id-list) (cons $1 $2))
                  ((ID) (list $1)))
         (toplevel ((expr) $1)
-                  ((LET id-list EQUAL expr) (prec prec_let) (let ((body (WFR (car $2) #f $4 (list source-name $4-start-pos $4-end-pos))))
+                  ((LET id-list EQUAL expr) (prec prec_let) (let ((body (WFR (car $2) #f $4 #:forbidden (list source-name $4-start-pos $4-end-pos))))
                                                               `(define ,(car $2) ,(if (null? (cdr $2)) body `(lambda (,@(cdr $2)) ,body)))))
                   ((LETREC id-list EQUAL CASE case-list-default WITH expr) `(define ,(car $2) (lambda (,@(cdr $2)) (cond ,@(WFR (car $2) $7 $5)))))
                   ((LETREC id-list EQUAL expr COLON expr SEMI WITH expr) `(define ,(car $2) (lambda (,@(cdr $2)) (if ,(WFR (car $2) $9 $4) ,(WFR (car $2) $9 $6) #f)))))
@@ -137,7 +137,7 @@
                           ((simple-expr) (list $1)))))))
 
 (define WFR
-  (lambda (f weight code . forbidden)
+  (lambda (f weight code #:forbidden (forbidden '()))
     (letrec ((wfr
                (lambda (code)
                  (cond
@@ -146,7 +146,7 @@
                    ((list? (car code)) (cons (wfr (car code)) (wfr (cdr code))))
                    ((eqv? f (car code)) (if (null? forbidden)
                                           `(if (< (,weight ,(cadr code)) (,weight ,(cadadr code))) ,code 0)
-                                          (let* ((forbidden (car forbidden)) (source (list-ref forbidden 0)) (start (list-ref forbidden 1)) (end (list-ref forbidden 2)))
+                                          (let* ((source (list-ref forbidden 0)) (start (list-ref forbidden 1)) (end (list-ref forbidden 2)))
                                             (raise-read-error (format "forbidden recursion on ~a" f) source (position-line start) (position-col start) (position-offset start) (- (position-offset end) (position-offset start))))))
                    (else
                      (case (car code)
@@ -165,12 +165,12 @@
     (not (= x y))))
 
 (define translate
-  (lambda (s . src-name)
+  (lambda (s #:src-name (src-name "current-input-port"))
     (let ((ois (open-input-string s)) (statements '()))
       (port-count-lines! ois)
       (letrec ((loop
                  (lambda ()
-                   (let ((r ((dslp (if (empty? src-name) "current-input-port" (car src-name))) (lambda () (dsll ois)))))
+                   (let ((r ((dslp src-name) (lambda () (dsll ois)))))
                      (when r
                        (set! statements (cons r statements))
                        (loop))))))
@@ -185,7 +185,7 @@
   (lambda (path)
     (call-with-input-file path
                           (lambda (in)
-                            (translate (port->string in) path)))))
+                            (translate (port->string in) #:src-name path)))))
 
 (define evaluate-file
   (lambda (path)
