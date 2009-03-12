@@ -13,7 +13,8 @@
 (define-empty-tokens op-tokens (EOF EQUAL EQUALEQUAL AMPERSAND LPAREN RPAREN MINUSGREATER COLON SEMI SEMISEMI LBRACKET RBRACKET AMPERAMPER BARBAR CASE DEFAULT ELSE FN IF IN LAMBDA LET LETREC NOT OR SUBTRACTIVE THEN WITH prec_let prec_uminus prec_app prec_list prec_if))
 
 (define-lex-abbrevs
-  (comment (:or (:: "//" (:* (:~ #\newline)) #\newline) (:: "/*" (complement (:: any-string "*/" any-string)) "*/")))
+  ;(comment (:or (:: "//" (:* (:~ #\newline)) #\newline) (:: "/*" (complement (:: any-string "*/" any-string)) "*/"))) ; C style
+  (comment (:: "(*" (complement (:: any-string "*)" any-string)) "*)")) ; OCaml style
   (lower-letter (:/ "a" "z"))
   (upper-letter (:/ #\A #\Z))
   (digit (:/ "0" "9")))

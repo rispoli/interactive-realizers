@@ -7,9 +7,8 @@ let g n =
 let h n =
     (n + 7) * ((n - 4) / 2) + 20;;
 
-let m s =
-    let n_0 = 1 in
-        mu s n_0;;
+(* mu <state> <initial_value> *)
+let m s = mu s 1;;
 
 let P n m = f n > f m;;
 
