@@ -21,14 +21,14 @@
       ((eqv-p? fi-sn (car sn)) (list-ref (car sn) 2))
       (else (already-in? fi-sn (cdr sn))))))
 
-(define find_m
+(define find-m
   (lambda (s n)
 	(already-in? `(_ ,n _) s)))
 
 (define consistent?
   (lambda (fi-sn sn)
-    (let ((n (list-ref fi-sn 1)) (m (list-ref fi-sn 2)))
-      (and (not (already-in? fi-sn sn)) ((car fi-sn) n m)))))
+    (let ((P (list-ref fi-sn 0)) (n (list-ref fi-sn 1)) (m (list-ref fi-sn 2)))
+      (and (not (already-in? `(,P ,n _) sn)) (P n m)))))
 
 (define incr-know
   (lambda (fi-sn sn)
