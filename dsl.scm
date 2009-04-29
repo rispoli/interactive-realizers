@@ -202,9 +202,8 @@
 ; (translate "letrec f x = case P1: f (g x); P2: t2; P3: if true then f (i x) else f (i y); P4: f (j x); default: f (t x); with w")
 ; (translate "let f x y = f (x + y) in f 2 3") ; forbidden
 ; (translate "let f x y = f (x + y)") ; forbidden
-; (translate "letrec f x = P1: let h x y = g (x + y) in f (g x); with W") ; transformed
+; (translate "letrec f x = P1: let h x y = g (x + y) in f (g x); with W") ; translated
 ; (translate "letrec f x = P1: let f x y = g (x + y) in f (g x); with W") ; shadowed
 ; (translate "letrec f x = P1: let f x y = f (x + y) in f (g x); with W") ; forbidden
-; (translate "letrec f x = f (h y): f ((lambda x -> 3) x); with W") ; (if 0 ...) ~ (if #f ...) ???
 ; (translate "letrec f x = case P1: f (g x); f (h y): t2; default: f (i z); with W")
 ; (translate "letrec f x = case default: f (i z); with W")

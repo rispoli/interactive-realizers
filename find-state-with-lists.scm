@@ -23,7 +23,7 @@
 
 (define find-m
   (lambda (s n)
-	(already-in? `(_ ,n _) s)))
+    (already-in? `(_ ,n _) s)))
 
 (define consistent?
   (lambda (fi-sn sn)

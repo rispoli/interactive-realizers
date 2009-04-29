@@ -9,8 +9,8 @@
 
 (define mu
   (lambda (s n)
-	(let ((m_i (find-m s n)))
-	  (if m_i (mu s m_i) n))))
+    (let ((m_i (find-m s n)))
+      (if m_i (mu s m_i) n))))
 
 (define final-state '())
 
