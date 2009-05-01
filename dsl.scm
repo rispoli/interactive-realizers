@@ -2,8 +2,6 @@
 ;   compiler/parser.mly
 ;   compiler/lexer.mlp
 
-;#lang scheme
-
 (require parser-tools/yacc
          parser-tools/lex
          (prefix-in : parser-tools/lex-sre)
