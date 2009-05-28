@@ -1,0 +1,48 @@
+<BOOL> ::= true | false
+
+<ID> ::= [a-zA-Z]+[a-zA-Z0-9_]*
+
+<NUM> ::= [0-9]+
+
+<prefix-op> ::= - | not
+
+<infix-op> ::= + | - | * | / | ^ | ** | == | != | < | > | <= | >= | & | && | || | or
+
+<case-list> ::= <expr>: <expr>; <case-list-default>
+             |  <expr>: <expr>;
+
+<case-list-default> ::= <case-list>
+                     |  default: <expr>;
+
+<expr> ::= <simple-expr>
+        |  <simple-expr> <simple-expr-list>
+        |  <prefix-op> <expr>
+        |  <expr> <infix-op> <expr>
+        |  if <expr> then <expr> else <expr>
+        |  let <id-list> = <expr> in <expr>
+        |  <function> <id-list> -> <expr>
+
+<expr-sm-list> ::= <expr-sm-list>; expr
+                |  <expr>
+                |  <expr-sm-list>;
+                |  §$\varepsilon$§
+
+<function> ::= lambda
+            |  fn
+
+<id-list> ::= <ID> <id-list>
+           |  <ID>
+
+<toplevel> ::= <expr>
+            |  let <id-list> = <expr>
+            |  letrec <id-list> = case <case-list-default> with <expr>
+            |  letrec <id-list> = <expr>: <expr>; with <expr>
+
+<simple-expr> ::= <BOOL>
+               |  <ID>
+               |  <NUM>
+               |  ( <expr> )
+               |  [ <expr-sm-list> ]
+
+<simple-expr-list> ::= <simple-expr> <simple-expr-list>
+                    |  <simple-expr>
