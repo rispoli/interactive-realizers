@@ -54,7 +54,7 @@
         (plot (map (lambda (x) (format "~a(x)" x)) functions) data #:range-x `(,(- sol delta) ,(+ delta sol)))))))
 
 ; (find-solution "minimo.dsl" 'F)
-; (to-gnuplot '(g (compose f g) h (compose f h)))
+; (to-gnuplot '(f (compose f g) (compose f h)))
 
 ; (find-solution "coquand.dsl" 'F)
 ; (to-gnuplot '(phi (lambda (x) (phi (+ 1 x)))))
