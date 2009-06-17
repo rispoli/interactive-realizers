@@ -6,7 +6,7 @@ let rec mu s n =
         | None -> n
         | Some m_i' -> mu s m_i'
 
-let find_solution ?(initial_state = []) f =
+let find_solution ?(initial_state = []) f initial_value =
     let final_state = find_state f initial_state in
-        print_endline ("valid solution in x = " ^ string_of_int (m final_state));
+        print_endline ("valid solution in x = " ^ string_of_int (mu final_state initial_value));
         final_state
