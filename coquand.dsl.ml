@@ -9,5 +9,5 @@ let p n m = phi n > phi m;;
 
 let fam s =
     [
-        fun s -> ( p, m s, (m s) + a )
+        (fun s -> ( p, m s, (m s) + a ))
     ];;
