@@ -53,7 +53,7 @@
       (let ((data (data functions-e)) (sol (m final-state)))
         (plot (map (lambda (x) (format "~a(x)" x)) functions) data #:range-x `(,(- sol delta) ,(+ delta sol)))))))
 
-; (find-solution "minimo.dsl" 'F)
+; (find-solution "minimum.dsl" 'F)
 ; (to-gnuplot '(f (compose f g) (compose f h)))
 
 ; (find-solution "coquand.dsl" 'F)
