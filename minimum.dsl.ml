@@ -1,11 +1,11 @@
 let f n =
-    (n + 1) * (n - 2) * ((n - 4) / 2) + 10;;
+    (n + 1) * (n - 2) * ((n - 4) / 2) + 2;;
 
 let g n =
     n + 1;;
 
 let h n =
-    (n + 7) * ((n - 4) / 2) + 20;;
+    (n + 7) * ((n - 4) / 2) + 5;;
 
 (* mu <state> <initial_value> *)
 let m s = mu s 1;;
