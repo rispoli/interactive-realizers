@@ -1,4 +1,4 @@
-; Lexer and Grammar inspired from Ocaml Light:
+; Lexer and Grammar inspired by Ocaml Light:
 ;   compiler/parser.mly
 ;   compiler/lexer.mlp
 
